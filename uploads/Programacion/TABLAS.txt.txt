@@ -1,0 +1,43 @@
+TABLAS: 
+ 
+Miran (ID_PREMIUM, CÓDIGO_ALFANUMÉRICO, FECHA_DE_VISUALIZACION)  
+ 
+Ven (ID_FREE, CÓDIGO_ALFANUMÉRICO, FECHA_VISUALIZACION)  
+ 
+Usuarios (CÓDIGO_IDENTIFICADOR, contrasenia, nombre_de_usuario, nombre, apellido, fecha_de_nacimiento, genero, fecha_unio_plataforma, correo_electrónico)  
+ 
+Canales (CÓDIGO_IDENTIFICADOR, ubicacion, descripcion, cantidad_de_videos, cantidad_de_suscriptores)  
+ 
+Videos (CÓDIGO_ALFANUMÉRICO, id_canales, cantidad_de_visualizaciones, título, thumbnail, fecha_de_publicacion, descripcion, duracion, calidad_de_subida, alcance, cantidad_likes, cantidad_de_cometarios)  
+ 
+Like (ID_LIKE, código_identificador, código_alfanumérico)  
+ 
+Suscribirse (ID_SUSCRIBIRSE, código_identificador, id_canales)  
+ 
+Comentarios (ID_COMENTARIOS, código_identificador, fecha_publicacion, cantidad_me_gusta, editado, id_videos)  
+ 
+Me_gusta (ID_ME_GUSTA, código_identificador, id_comentarios)  
+ 
+Pueden_tener (ID_PUEDEN_TENER, id_comentarios, id_comentarios_pueden_tener)  
+ 
+Premium (CÓDIGO_IDENTIFICADOR)  
+ 
+Facturas (NÚMERO_DE_FACTURA, id_premium, fecha_de_emisión, c_a_e, vencimiento_del_cae, tipo, tipo_de_comprobante, monto, iva_servicios_digitales, percepción_impuesto_iibb, impuesto_rg_afip_4815, impuesto_pais)  
+ 
+Descargan (ID_DESCARGAN, id_premium, código_alfanumérico)  
+ 
+Etiquetas (ETIQUETAS)  
+ 
+Contiene (ID_CONTIENE, código_alfanumérico, etiquetas)  
+ 
+Enlaces (ENLACES)  
+ 
+Poseen (ID_POSEEN, id_canales, enlaces)  
+ 
+Free (CÓDIGO_IDENTIFICADOR)  
+ 
+Anuncios (ID_ANUNCIOS, nombre_anunciante, duracion, url)  
+ 
+Historial (FECHA_DE_VISUALIZACION)  
+ 
+Registro (FECHA_VISUALIZACION)  

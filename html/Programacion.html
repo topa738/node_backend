@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tecnologia</title>
+    <link rel="stylesheet" href="http://localhost:8080/archivo.css"/>
+</head>
+</body>
+<section id='section'>
+<h4>Sube un archivo</h4>
+<form action="/files" method="post" enctype="multipart/form-data">
+  <input type="file" name="Programacion" id="" >
+    <input type="text" id="name" name="Programacion" required
+           minlength="0" maxlength="16" size="10">
+    <input type="text" id="descripcion" name="Programacion" required
+           minlength="4" maxlength="16" size="10">
+    <select name="Programacion" id="1">
+        <option value="Programacion">Programacion</option>
+        <option value="Arquitecturas">Arquitecturas</option>
+        <option value="SistemaOperativo">SistemaOperativo</option>
+        <option value="Redes">Redes</option>
+        <option value="Disenio">Disenio</option>
+    </select>
+  <input type="submit" value="Enviar">
+</form>
+</section>
+
+</body>
+<script>
+
+    fetch('http://localhost:8080/Programacion/files')
+        .then(response => {
+            return response.json();
+        })
+        .then(jsondata => cargarData(jsondata));
+
+    function addCapa(nombre,descripcion) {
+        var articulo = document.createElement('article');
+        articulo.href = "http://localhost:8080/Programacion";
+        const p1 = document.createElement('p');
+        p1.innerText='Nombre: '+nombre
+        const p2 = document.createElement('p');
+        p2.innerText='Descripcion:  '+descripcion
+        articulo.appendChild(p1)
+        articulo.appendChild(p2)
+        const img=document.createElement('img');
+        img.src="http://localhost:8080/iconos/docx.png"
+        img.width=20
+        img.height=20
+        articulo.appendChild(img)
+        document.getElementById('section').appendChild(articulo);
+
+    }
+    function cargarData(jsondata){
+        for (let i=0;i<jsondata.length;i++ ){
+            console.log(jsondata[i].nombre,jsondata[i].descripcion)
+            addCapa(jsondata[i].nombre,jsondata[i].descripcion)
+        }
+    }
+
+    /*const formElement=document.getElementById("saveTRansaction");
+    formElement.addEventListener("submit",(event)=>){
+        event.preventDefault();
+        let tr
+    }*/
+</script>
+</html>

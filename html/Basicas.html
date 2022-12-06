@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Basicas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300;400&family=Luxurious+Roman&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="http://localhost:8080/archivo.css"/>
+</head>
+</body>
+
+<section id='section'>
+<article>
+    <h4>Sube tu archivo</h4>
+    <form action="/filesB" method="post" enctype="multipart/form-data">
+        <input type="file" name="Basicas" id="" >
+        <input type="text" id="name" name="Basicas" required minlength="0" maxlength="16" size="10">
+        <input type="text" id="descripcion" name="Basicas" required minlength="4" maxlength="32" size="10">
+        <select name="Basicas" id="2">
+            <option value="AMB">AMB</option>
+            <option value="AMA">AMA</option>
+            <option value="ALGEBRA">ALGEBRA</option>
+            <option value="AGA">AGA</option>
+            <option value="VECTORIAL">VECTORIAL</option>
+        </select>
+        <input type="submit" value="Enviar">
+    </form>
+</article>
+</section>
+</body>
+
+<script>
+
+    fetch('http://localhost:8080/Basicas/files')
+        .then(response => {
+            return response.json();
+        })
+        .then(jsondata => cargarData(jsondata));
+
+    function addCapa(nombre,descripcion) {
+        var articulo = document.createElement('article');
+        articulo.href = "http://localhost:8080/Programacion";
+        const p1 = document.createElement('p');
+        p1.innerText='Nombre: '+nombre
+        const p2 = document.createElement('p');
+        p2.innerText='Descripcion:  '+descripcion
+        articulo.appendChild(p1)
+        articulo.appendChild(p2)
+        const img=document.createElement('img');
+        img.src="http://localhost:8080/iconos/docx.png"
+        img.width=20
+        img.height=20
+        articulo.appendChild(img)
+        document.getElementById('section').appendChild(articulo);
+
+    }
+    function cargarData(jsondata){
+        for (let i=0;i<jsondata.length;i++ ){
+            console.log(jsondata[i].nombre,jsondata[i].descripcion)
+            addCapa(jsondata[i].nombre,jsondata[i].descripcion)
+        }
+    }
+
+    /*const formElement=document.getElementById("saveTRansaction");
+    formElement.addEventListener("submit",(event)=>){
+        event.preventDefault();
+        let tr
+    }*/
+</script>
+</html>
