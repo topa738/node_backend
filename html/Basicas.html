@@ -11,7 +11,6 @@
 </body>
 
 <section id='section'>
-<article>
     <h4>Sube tu archivo</h4>
     <form action="/filesB" method="post" enctype="multipart/form-data">
         <input type="file" name="Basicas" id="" >
@@ -26,7 +25,6 @@
         </select>
         <input type="submit" value="Enviar">
     </form>
-</article>
 </section>
 </body>
 
@@ -38,7 +36,7 @@
         })
         .then(jsondata => cargarData(jsondata));
 
-    function addCapa(nombre,descripcion) {
+    function addCapa(nombre,descripcion,nombrearchivo) {
         var articulo = document.createElement('article');
         articulo.href = "http://localhost:8080/Programacion";
         const p1 = document.createElement('p');
@@ -52,20 +50,18 @@
         img.width=20
         img.height=20
         articulo.appendChild(img)
+        const link=document.createElement('a')
+        link.innerText='Descargar'
+        link.href='/Basicas/descargar/'+nombrearchivo;
+        articulo.appendChild(link)
         document.getElementById('section').appendChild(articulo);
 
     }
     function cargarData(jsondata){
         for (let i=0;i<jsondata.length;i++ ){
             console.log(jsondata[i].nombre,jsondata[i].descripcion)
-            addCapa(jsondata[i].nombre,jsondata[i].descripcion)
+            addCapa(jsondata[i].nombre,jsondata[i].descripcion,jsondata[i].nombrearchivo)
         }
     }
-
-    /*const formElement=document.getElementById("saveTRansaction");
-    formElement.addEventListener("submit",(event)=>){
-        event.preventDefault();
-        let tr
-    }*/
 </script>
 </html>

@@ -1,5 +1,5 @@
 const express = require("express");
-const {infoCursos} = require("../Data/cursos");
+let infomaterial=JSON.parse(data)
 const routermatematica=express.Router();
 
 routermatematica.get('/',(req,res)=>
