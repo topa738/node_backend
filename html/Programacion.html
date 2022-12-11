@@ -29,10 +29,12 @@
 <script>
 
     fetch('http://localhost:8080/Programacion/files')
-        .then(response => {
-            return response.json();
+        .then(response => response.text())
+        .then(data => {
+            /** Procesar los datos **/
+            console.log(typeof data)
+            cargarData(JSON.parse(data))
         })
-        .then(jsondata => cargarData(jsondata));
 
     function addCapa(nombre,descripcion,nombrearchivo) {
         var articulo = document.createElement('article');

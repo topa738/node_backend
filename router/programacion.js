@@ -1,39 +1,29 @@
 
 const express = require("express");
-const {infoCursos} = require("../Data/cursos");
+const codemodels=require('../Data/programacion')
 
 const routerProgramacion=express.Router();
 //app.use('/cursos/programacion',routerProgramacion);
 
 
-
-routerProgramacion.get("/:lenguaje",(req,res)=>{
-    const lenguaje= req.params.lenguaje;
-    const resultados=infoCursos.programacion.filter(curso=>curso.lenguaje===lenguaje);
-
-    if(resultados.length===0){
-        return res.status(404).end('No se a encontrado el curso de ')
-    }
-    if(req.query.ordenar==='vistas'){
-        return res.send(JSON.stringify(resultados.sort((a,b)=>a.vistas- b.vistas)))
-
-    }
-    res.send(JSON.stringify(resultados));
-    //res.send("Todo Bien!");
+routerProgramacion.get("/",(req,res)=>{
+    res.sendFile("/home/facu/unnobe/html/Programacion.html");
 })
+routerProgramacion.get("/files",(req,res)=>{
+    codemodels.find({}, (err, docs) => {
 
-routerProgramacion.get("/:lenguaje/:nivel",(req,res)=>{
-    const lenguaje= req.params.lenguaje;
-    const nivel= req.params.nivel;
+        //res.setHeader('Content-Type',JSON.stringify(docs))
+        res.end(JSON.stringify(docs));
 
-    const resultados=infoCursos.programacion.filter(curso=>curso.lenguaje===lenguaje && curso.nivel===nivel);
-
-    console.log(resultados)
-    if(resultados.length===0){
-        return res.status(404).end('No se a encontrado el curso de ')
-    }
-
-    res.send(JSON.stringify(resultados));
-    //res.send("Todo Bien!");
+    })
 })
+routerProgramacion.get("/descargar/:id",(req,res)=>{
+    res.download('/home/facu/unnobe/uploads/Programacion/'+req.params.id,req.params.id,
+        function (error){
+            if(error){
+                console.log(error)
+            }else{
+                console.log('LISTO')
+            }});
+});
 module.exports= routerProgramacion;

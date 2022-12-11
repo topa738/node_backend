@@ -1,16 +1,32 @@
 const express = require ('express')  //requiere --> import
 const app=express()
-const multer= require('multer');
-const fs = require('fs');
-const Console = require("console");
-let data = fs.readFileSync('./uploads/data.json');
-let infomaterial=JSON.parse(data)
 
-const routerMatematicas = require('./router/matematicas.js');
+const binary = require('mongodb').Binary;
+
+const mongoose = require('mongoose');
+//base de dato
+main().catch(err => console.log(err));
+
+    async function main() {
+        await mongoose.connect('');
+        mongoose.connection.on('error',({message})=>{
+            console.error($(message));
+        });
+        // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
+    }
+const basicasmodel=require('./Data/bascias.js')
+const codemodel=require('./Data/programacion.js')
+
+
+const multer= require('multer');
+
+const fs = require('fs');
+
+const routerBasicas = require('./router/basicas');
 const routerProgramacion = require("./router/programacion");
 
-app.use('/cursos/matematicas',routerMatematicas);
-app.use('/cursos/programacion',routerProgramacion);
+app.use('/Basicas',routerBasicas);
+app.use('/Programacion',routerProgramacion);
 
 
 
@@ -57,106 +73,44 @@ app.get("/archivo.css",(req,res)=>{
 })
 
 
-app.get("/Basicas",(req,res)=>{
-    res.sendFile(__dirname+"/html/Basicas.html");
-})
-app.get("/Basicas/files",(req,res)=>{
-    //return infomaterial.matematicas;
-    res.setHeader('Content-Type',infomaterial.matematicas)
-    res.end(JSON.stringify(infomaterial.matematicas));
-})
-
-app.get("/Basicas/descargar/:id",(req,res)=>{
-
-    function buscar(jsondata,nombre){
-        for (let i=0;i<jsondata.length;i++ ){
-            if(nombre==jsondata[i].nombrearchivo){
-                return jsondata[i].ruta
-            }
-        }
-    }
-    console.log(buscar(infomaterial.matematicas,req.params.id))
-
-
-    res.download(__dirname+'/'+buscar(infomaterial.matematicas,req.params.id),req.params.id,
-        function (err){
-            if(err){
-                console.log(err)
-            }else{
-                console.log('LISTO')
-            }
-        });
-});
-app.get("/Programacion",(req,res)=>{
-    res.sendFile(__dirname+"/html/Programacion.html");
-})
-app.get("/Programacion/files",(req,res)=>{
-    //return infomaterial.matematicas;
-    res.setHeader('Content-Type',infomaterial.programacion)
-    res.end(JSON.stringify(infomaterial.programacion));
-})
-app.get("/Programacion/descargar/:id",(req,res)=>{
-
-    function buscar(jsondata,nombre){
-        for (let i=0;i<jsondata.length;i++ ){
-            if(nombre==jsondata[i].nombrearchivo){
-                return jsondata[i].ruta
-            }
-        }
-    }
-    console.log(buscar(infomaterial.programacion,req.params.id))
-
-
-    res.download(__dirname+'/'+buscar(infomaterial.programacion,req.params.id),req.params.id,
-        function (error){
-        if(error){
-            console.log(error)
-        }else{
-            console.log('LISTO')
-        }});
-    });
 
 
 
 //POST
 app.post("/filesB",upload.single('Basicas'),(req,res)=>{
 
-    crearObjeto(req.body.Basicas[0],req.body.Basicas[1],'uploads/Basicas/'+req.file.originalname,req.body.Basicas[2],'matematicas',req.file.originalname)
-    res.send("Todo Bien!");
+    const date= new basicasmodel({//creador de la tabla/modelo BD
+        nombre:req.body.Basicas[0],//nobre con el que se presenta el archivo
+        descripcion:req.body.Basicas[1],//descripcion tranqui
+        materia:req.body.Basicas[2],
+        ruta:'uploads/Programacion/'+req.file.originalname,//ruta de la data
+        tipo:'programacion',
+        //materia
+        nombrearchivo:req.file.originalname
 
-    }
+    })
+    date.save().then(() => console.log('LISTO'));
+    res.send("Archivo cargado ");
+}
 )
 app.post("/files",upload.single('Programacion'),(req,res)=>{
 
-        crearObjeto(req.body.Programacion[0],req.body.Programacion[1],'uploads/Programacion/'+req.file.originalname,req.body.Programacion[2],'programacion',req.file.originalname)
-        res.send("Todo Bien!");
+        const date= new codemodel({//creador de la tabla/modelo BD
+        nombre:req.body.Programacion[0],//nobre con el que se presenta el archivo
+        descripcion:req.body.Programacion[1],//descripcion tranqui
+        materia:req.body.Programacion[2],
+        ruta:'uploads/Programacion/'+req.file.originalname,//ruta de la data
+        tipo:'programacion',
+        //materia
+        nombrearchivo:req.file.originalname
 
+    })
+    console.log(date)
+    date.save().then(() => console.log('LISTO'));
+       res.send("Archivo cargado ");
     }
 )
 
-function crearObjeto(nombre,descripcion,ruta,materia,tipo,nombrearchivo){
-
-    const Data={
-       // id:infoCursos.matematicas.length,
-        nombre:nombre,//nobre con el que se presenta el archivo
-        descripcion:descripcion,//descripcion tranqui
-        ruta:ruta,//ruta de la data
-        data: new Date(),//cundo fue ingresado
-        materia:materia,//materia
-        nombrearchivo:nombrearchivo
-
-
-    }
-    infomaterial[tipo].push(Data)
-    const data=JSON.stringify(infomaterial)
-    fs.writeFile('./uploads/data.json',data,(error)=>{
-        if(error){
-            console.log(`Error: ${error}`)
-        }else{
-            console.log('ARCHIVO GENERADO CORRECTAMENTE ')
-        }
-    })
-}
 
 
 app.listen(8080,()=> console.log("Server start"));
