@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 main().catch(err => console.log(err));
 
     async function main() {
-        await mongoose.connect('');
+        await mongoose.connect('mongodb+srv://topa738:Candela123@cluster0.tviizym.mongodb.net/?retryWrites=true&w=majority');
         mongoose.connection.on('error',({message})=>{
             console.error($(message));
         });
@@ -24,9 +24,11 @@ const fs = require('fs');
 
 const routerBasicas = require('./router/basicas');
 const routerProgramacion = require("./router/programacion");
+const routerfront = require("./router/front");
 
 app.use('/Basicas',routerBasicas);
 app.use('/Programacion',routerProgramacion);
+
 
 
 
