@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 main().catch(err => console.log(err));
 
     async function main() {
-        await mongoose.connect('mongodb+srv://topa738:Candela123@cluster0.tviizym.mongodb.net/?retryWrites=true&w=majority');
+        await mongoose.connect('mongodb+srv://topa738:@cluster0.tviizym.mongodb.net/?retryWrites=true&w=majority');
         mongoose.connection.on('error',({message})=>{
             console.error($(message));
         });
