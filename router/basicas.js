@@ -1,6 +1,6 @@
 const express = require("express");
 const routerbasicas=express.Router();
-
+const path = require('path');
 const models=require('../Data/bascias.js')
 
 routerbasicas.use((req, res, next) => {
@@ -13,8 +13,10 @@ routerbasicas.use((req, res, next) => {
 
 
 routerbasicas.get("/",(req,res)=>{
-    console.log(__dirname)
-    res.sendFile("/home/facu/unnobe/html/Basicas.html");
+const filePath = path.join(__dirname, '..', 'html', 'Basicas.html');
+
+// Enviar el archivo
+res.sendFile(filePath);
 })
 routerbasicas.get("/files",(req,res)=> {
     let data=undefined;
@@ -27,7 +29,7 @@ routerbasicas.get("/files",(req,res)=> {
 
 
 routerbasicas.get("/descargar/:id",(req,res)=>{
-    res.download('/home/facu/unnobe/uploads/Basicas/'+req.params.id,req.params.id,
+    res.download('uploads/Basicas/'+req.params.id,req.params.id,
         function (err){
             if(err){
                 console.log(err)

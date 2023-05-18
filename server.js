@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 main().catch(err => console.log(err));
 
     async function main() {
-        await mongoose.connect('mongodb+srv://topa738:Candela123@cluster0.tviizym.mongodb.net/?retryWrites=true&w=majority');
+        await mongoose.connect('mongodb+srv://:@cluster0.tviizym.mongodb.net/?retryWrites=true&w=majority');
         mongoose.connection.on('error',({message})=>{
             console.error($(message));
         });
@@ -24,7 +24,6 @@ const fs = require('fs');
 
 const routerBasicas = require('./router/basicas');
 const routerProgramacion = require("./router/programacion");
-const routerfront = require("./router/front");
 
 app.use('/Basicas',routerBasicas);
 app.use('/Programacion',routerProgramacion);
@@ -73,6 +72,12 @@ app.get("/archivo.css",(req,res)=>{
     res.sendFile(__dirname+"/css/archivosstyle.css");
     //res.send("Todo Bien!");
 })
+app.get("/img.blog/:img",(req,res)=>{
+    const icono= req.params.img
+    res.sendFile(__dirname+"/img.blog/"+icono);
+    //res.send("Todo Bien!");
+})
+
 
 
 

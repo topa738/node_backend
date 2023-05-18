@@ -1,9 +1,9 @@
 
 const express = require("express");
 const codemodels=require('../Data/programacion')
+const path = require('path');
 
 const routerProgramacion=express.Router();
-//app.use('/cursos/programacion',routerProgramacion);
 
 
 routerProgramacion.use((req, res, next) => {
@@ -16,7 +16,13 @@ routerProgramacion.use((req, res, next) => {
 
 
 routerProgramacion.get("/",(req,res)=>{
-    res.sendFile("/home/facu/unnobe/html/Programacion.html");
+    
+
+// Ruta relativa al archivo que deseas enviar
+const filePath = path.join(__dirname, '..', 'html', 'Programacion.html');
+
+// Enviar el archivo
+res.sendFile(filePath);
 })
 routerProgramacion.get("/files",(req,res)=>{
     codemodels.find({}, (err, docs) => {
@@ -27,7 +33,8 @@ routerProgramacion.get("/files",(req,res)=>{
     })
 })
 routerProgramacion.get("/descargar/:id",(req,res)=>{
-    res.download('/home/facu/unnobe/uploads/Programacion/'+req.params.id,req.params.id,
+    res.download('uploads/Programacion/'+req.params.id,req.params.id,
+   
         function (error){
             if(error){
                 console.log(error)
