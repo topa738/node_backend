@@ -1,25 +1,34 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
+const cors = require('cors');
+
+// Configurar CORS para permitir todas las solicitudes
+app.use(cors());
+
 require('dotenv').config();
 
 const multer = require('multer');
 const fs = require('fs');
-const { sequelize, Sistema, Temporales, Usuario, Materiales, Carreras, Materias } = require('./BaseDeDatos/InicioBaseDeDatos');
 
+const { sequelize, Sistema, Temporales, Usuario, Materiales, Temas, Seccion } = require('./BaseDeDatos/BD');
+app.use(bodyParser.json());
 const routerMaterial = require("./endpoint/material");
+const routerTemas = require("./endpoint/temas");
 
 const startServer = async () => {
   try {
     await sequelize.authenticate();
     console.log('Conexión a la base de datos exitosa');
 
-    await sequelize.sync({ force: true }); // Esto sincroniza todos los modelos
-    console.log("Tablas creadas exitosamente");
+    await sequelize.sync(); // Esto sincroniza todos los modelos
+   // console.log("Tablas creadas exitosamente");
 
     // Crear un registro de ejemplo en la tabla sistema
-    await Sistema.create({ email: "no asignado", contrasenia: "no asignado" });
+    //await Sistema.create({ email: "no asignado", contrasenia: "no asignado" });
 
     app.use('/Material', routerMaterial);
+    app.use('/Temas',routerTemas);
 
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {

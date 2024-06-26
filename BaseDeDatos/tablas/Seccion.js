@@ -1,15 +1,14 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../PostgresSQL');
+const sequelize = require('../ConexionPostgresSQL');
 
-const Materias = sequelize.define('Materias', {
-  carreras_iden: {
+const Seccion = sequelize.define('Seccion', {
+  seccion_iden: { //seccion pk
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  material_iden: {
+  temas_iden: {//la seccion pertenece a un tema 
     type: DataTypes.INTEGER,
-    primaryKey: true,
     allowNull: false
   },
   nombre: {
@@ -17,8 +16,8 @@ const Materias = sequelize.define('Materias', {
     allowNull: false
   }
 }, {
-  tableName: 'materias',
+  tableName: 'seccion',
   timestamps: false
 });
 
-module.exports = Materias;
+module.exports = Seccion;

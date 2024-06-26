@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../PostgresSQL');
+const sequelize = require('../ConexionPostgresSQL');
 
 const Temporales = sequelize.define('Temporales', {
   temporal_iden: {

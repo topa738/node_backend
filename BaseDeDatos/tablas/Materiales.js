@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../PostgresSQL');
+const sequelize = require('../ConexionPostgresSQL');
 
 const Materiales = sequelize.define('Materiales', {
   material_iden: {
@@ -8,6 +8,10 @@ const Materiales = sequelize.define('Materiales', {
     autoIncrement: true,
   },
   usuario_iden: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  seccion_iden: {
     type: DataTypes.INTEGER,
     allowNull: false
   },

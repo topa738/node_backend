@@ -1,27 +1,23 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../ConexionPostgresSQL');
 
-const Usuarios = sequelize.define('Usuario', {
-  usuario_iden: {
+const Temas = sequelize.define('temas', {
+  temas_iden: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  nombredeusuario: {
+  nombre: {
     type: DataTypes.STRING,
     allowNull: false
   },
-  temporal_iden: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  sisema_iden: {
-    type: DataTypes.INTEGER,
+  descripcion: {
+    type: DataTypes.STRING,
     allowNull: false
   }
 }, {
-  tableName: 'usuario',
+  tableName: 'temas',
   timestamps: false
 });
 
-module.exports = Usuarios;
+module.exports = Temas;

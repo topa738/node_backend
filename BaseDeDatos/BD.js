@@ -1,17 +1,18 @@
-const sequelize = require('./PostgresSQL');
+const sequelize = require('./ConexionPostgresSQL');
 const Sistema = require('./tablas/Sistema');
 const Temporales = require('./tablas/Temporales');
 const Usuario = require('./tablas/Usuarios');
 const Materiales = require('./tablas/Materiales');
-const Carreras = require('./tablas/Carreras');
-const Materias = require('./tablas/Materias');
+const Temas = require('./tablas/Temas');
+const Seccion = require('./tablas/Seccion');
 
 // Definir relaciones
 Usuario.belongsTo(Sistema, { foreignKey: 'sisema_iden' });
 Usuario.belongsTo(Temporales, { foreignKey: 'temporal_iden' });
 Materiales.belongsTo(Usuario, { foreignKey: 'usuario_iden' });
-Materias.belongsTo(Materiales, { foreignKey: 'material_iden' });
-Materias.belongsTo(Carreras, { foreignKey: 'carreras_iden' });
+Materiales.belongsTo(Seccion, { foreignKey: 'seccion_iden' });
+Seccion.belongsTo(Temas, { foreignKey: 'temas_iden' });
+
 
 // Exportar sequelize y los modelos
 module.exports = {
@@ -20,6 +21,6 @@ module.exports = {
   Temporales,
   Usuario,
   Materiales,
-  Carreras,
-  Materias
+  Temas,
+  Seccion
 };

@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../PostgresSQL');
+const sequelize = require('../ConexionPostgresSQL');
 
+//sistema hace refernecia a los usuarios que si tienen contrasenia 
+//y gmail, osea no son generado en el momento 
 const Sistema = sequelize.define('Sistema', {
   sisema_iden: {
     type: DataTypes.INTEGER,

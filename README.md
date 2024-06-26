@@ -1,1 +1,2 @@
-#Proyecto uso de node.js y mango.db
+#Proyecto uso de node.js conectado a Postgresql.
+
