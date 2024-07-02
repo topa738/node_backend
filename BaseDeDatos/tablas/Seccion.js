@@ -14,6 +14,18 @@ const Seccion = sequelize.define('Seccion', {
   nombre: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  imagen: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  descripcion: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  color: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 }, {
   tableName: 'seccion',

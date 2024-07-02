@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const path = require('path');
 const cors = require('cors');
 
 // Configurar CORS para permitir todas las solicitudes
@@ -15,6 +16,7 @@ const { sequelize, Sistema, Temporales, Usuario, Materiales, Temas, Seccion } = 
 app.use(bodyParser.json());
 const routerMaterial = require("./endpoint/material");
 const routerTemas = require("./endpoint/temas");
+const routerSeccion = require("./endpoint/seccion");
 
 const startServer = async () => {
   try {
@@ -29,6 +31,8 @@ const startServer = async () => {
 
     app.use('/Material', routerMaterial);
     app.use('/Temas',routerTemas);
+    app.use('/Seccion',routerSeccion);
+    app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
@@ -46,55 +50,6 @@ const startServer = async () => {
 
     const upload = multer({ storage: storage });
 
-    app.get("/", (req, res) => {
-      res.sendFile(__dirname + "/html/blog.html");
-    });
-
-    app.get("/blog.css", (req, res) => {
-      res.sendFile(__dirname + "/css/blogstyle.css");
-    });
-
-    app.get("/iconos/:icono", (req, res) => {
-      const icono = req.params.icono;
-      res.sendFile(__dirname + "/iconos/" + icono);
-    });
-
-    app.get("/archivo.css", (req, res) => {
-      res.sendFile(__dirname + "/css/archivosstyle.css");
-    });
-
-    app.get("/img.blog/:img", (req, res) => {
-      const icono = req.params.img;
-      res.sendFile(__dirname + "/img.blog/" + icono);
-    });
-
-    // POST
-    app.post("/filesB", upload.single('Basicas'), (req, res) => {
-      const date = new basicasmodel({
-        nombre: req.body.Basicas[0],
-        descripcion: req.body.Basicas[1],
-        materia: req.body.Basicas[2],
-        ruta: 'uploads/Programacion/' + req.file.originalname,
-        tipo: 'programacion',
-        nombrearchivo: req.file.originalname
-      });
-      date.save().then(() => console.log('LISTO'));
-      res.send("Archivo cargado ");
-    });
-
-    app.post("/files", upload.single('Programacion'), (req, res) => {
-      const date = new codemodel({
-        nombre: req.body.Programacion[0],
-        descripcion: req.body.Programacion[1],
-        materia: req.body.Programacion[2],
-        ruta: 'uploads/Programacion/' + req.file.originalname,
-        tipo: 'programacion',
-        nombrearchivo: req.file.originalname
-      });
-      console.log(date);
-      date.save().then(() => console.log('LISTO'));
-      res.send("Archivo cargado ");
-    });
 
     app.listen(8080, () => console.log("Server start"));
   } catch (error) {
