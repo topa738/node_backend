@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 const routerMaterial = require("./endpoint/material");
 const routerTemas = require("./endpoint/temas");
 const routerSeccion = require("./endpoint/seccion");
+const routerUsuario = require("./endpoint/usuarios");
 
 const startServer = async () => {
   try {
@@ -33,6 +34,8 @@ const startServer = async () => {
     app.use('/Temas',routerTemas);
     app.use('/Seccion',routerSeccion);
     app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+    app.use('/Usuarios',routerUsuario);
+
 
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {

@@ -11,10 +11,6 @@ const Usuarios = sequelize.define('Usuario', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  temporal_iden: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
   sisema_iden: {
     type: DataTypes.INTEGER,
     allowNull: false

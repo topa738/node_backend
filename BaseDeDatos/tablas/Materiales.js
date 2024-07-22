@@ -15,7 +15,7 @@ const Materiales = sequelize.define('Materiales', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  titulo: {
+  nombre: {
     type: DataTypes.STRING,
     allowNull: false
   },

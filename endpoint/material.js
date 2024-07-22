@@ -1,12 +1,10 @@
 const express = require("express");
-// const codemodels=require('../Data/programacion')
-
+const jwt = require('jsonwebtoken');
 const path = require('path');
 const multer = require('multer');
 const { Materiales } = require("../BaseDeDatos/BD");
 
 const routerMaterial=express.Router();
-
 
 
 routerMaterial.get("/",(req,res)=>{
@@ -36,11 +34,11 @@ res.sendFile(filePath);
 //                 console.log('LISTO')
 //             }});
 // });
-routerMaterial.get("/getMaterial/:seccion_iden", async (req, res) => {
+routerMaterial.get("/getMateriales/:seccion_iden", async (req, res) => {
     try {
-        const Seccion_iden = req.params.temas_iden;
+        const seccion_iden = req.params.seccion_iden;
         const materiales = await Materiales.findAll({
-            where: { seccion_iden: Seccion_iden }
+            where: { seccion_iden: seccion_iden }
         });
         if (materiales.length > 0) {
             res.json(materiales);
@@ -55,7 +53,7 @@ routerMaterial.get("/getMaterial/:seccion_iden", async (req, res) => {
 });
 const storage = multer.diskStorage({
 destination: (req, file, cb) => {
-  cb(null, 'uploads*/recursos/');
+  cb(null, 'uploads');
 },
 filename: (req, file, cb) => {
   cb(null, Date.now() + '-' + file.originalname);
@@ -63,21 +61,23 @@ filename: (req, file, cb) => {
 });
 
 const upload = multer({ storage: storage });
-routerMaterial.post("/createMaterial",upload.single('recurso'), async (req, res) => {
+routerMaterial.post("/createMaterial",upload.single('archivo'), async (req, res) => {
 try {
-    const { usuario_iden,seccion_iden,tirulo, descripcion } = req.body;
+    const { usuario,seccion_iden,nombre, descripcion } = req.body;
     
     const recurso = req.file.path;
-    if (!usuario_iden || !seccion_iden || !recurso || !tirulo || !descripcion) {
+    if (!usuario || !seccion_iden || !recurso || !nombre || !descripcion) {
         return res.status(400).json({ error: 'Todos los campos son requeridos' });
     }
-
+    const seccion_idenint=parseInt(seccion_iden.replace(/'/g, ''), 10);
+    const payload = jwt.verify(usuario, process.env.JWT_SECRET);
+    const usuario_iden=payload.usuario.usuario_iden;
     const nuevaMaterial = await Materiales.create({
         usuario_iden,
-        seccion_iden,
-        titulo,
+        seccion_idenint,
+        nombre,
         descripcion,
-        ubicacion_backend
+        recurso
       });
   
       res.json(nuevaMaterial);
