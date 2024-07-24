@@ -64,20 +64,31 @@ const upload = multer({ storage: storage });
 routerMaterial.post("/createMaterial",upload.single('archivo'), async (req, res) => {
 try {
     const { usuario,seccion_iden,nombre, descripcion } = req.body;
-    
+    var payload;
     const recurso = req.file.path;
     if (!usuario || !seccion_iden || !recurso || !nombre || !descripcion) {
         return res.status(400).json({ error: 'Todos los campos son requeridos' });
     }
     const seccion_idenint=parseInt(seccion_iden.replace(/'/g, ''), 10);
-    const payload = jwt.verify(usuario, process.env.JWT_SECRET);
+    try {
+        payload = jwt.verify(usuario, process.env.JWT_SECRET);
+      
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ error: 'Sesion expirada' });
+        }
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ error: 'Sesion inválido' });
+        }
+        return res.status(500).json({ error: 'Error interno del servidor' });
+    }
     const usuario_iden=payload.usuario.usuario_iden;
     const nuevaMaterial = await Materiales.create({
-        usuario_iden,
-        seccion_idenint,
-        nombre,
-        descripcion,
-        recurso
+        usuario_iden:usuario_iden,
+        seccion_iden:seccion_idenint,
+        nombre:nombre,
+        descripcion:descripcion,
+        ubicacion_backend:recurso
       });
   
       res.json(nuevaMaterial);
