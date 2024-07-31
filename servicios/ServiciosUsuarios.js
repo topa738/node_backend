@@ -33,7 +33,23 @@ function generarNombreDeUsuario() {
 }
 
 
-
+exports.queUsuario=async(req,res)=>{
+  const { usuario } = req.body;
+  let payload;
+  try {
+    payload = jwt.verify(usuario, process.env.JWT_SECRET);
+    return res.status(200).json({usuario:payload.usuario.nombredeusuario,tipo:'Anonimo'})
+  
+} catch (error) {
+    if (error.name === 'TokenExpiredError') {
+        return res.status(401).json({ error: 'Sesion expirada' });
+    }
+    if (error.name === 'JsonWebTokenError') {
+        return res.status(401).json({ error: 'Sesion inválido' });
+    }
+    return res.status(500).json({ error: 'Error interno del servidor' });
+}
+}
 exports.login = async (req, res) => {
   const { nombredeusuario, password } = req.body;
   try {
