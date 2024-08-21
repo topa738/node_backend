@@ -16,7 +16,7 @@ const Comentarios = sequelize.define('Comentarios', {
     allowNull: false
   },
   cuerpo: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false
   },
   
